@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StreamFlix - Video Streaming Platform</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #010101;
+    color: rgb(255, 0, 0);
+}
+
+button {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* LOGIN */
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg,#111,#2b0b35);
+}
+
+.auth-box {
+    width: 380px;
+    background: #18181f;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0,0,0,.5);
+}
+
+.logo {
+    text-align: center;
+    color: #e50914;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.auth-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.auth-box input {
+    width: 100%;
+    padding: 13px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 6px;
+    background: #292933;
+    color: white;
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 13px;
+    margin-top: 12px;
+    background: #e50914;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.switch {
+    text-align: center;
+    margin-top: 18px;
+    color: #aaa;
+}
+
+.switch span {
+    color: #e50914;
+    cursor: pointer;
+}
+
+.error {
+    color: #ff5555;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* NAVBAR */
+
+.navbar {
+    height: 65px;
+    background: #111116;
+    display: flex;
+    align-items: center;
+    padding: 0 5%;
+    gap: 25px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-logo {
+    color: #e50914;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.navbar a:hover {
+    color: #e50914;
+}
+
+.nav-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logout {
+    background: #e50914;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+/* PAGES */
+
+.page {
+    padding: 30px 5%;
+}
+
+/* HERO */
+
+.hero {
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    padding: 50px 8%;
+    background:
+    linear-gradient(90deg,#08080b 15%,transparent),
+    linear-gradient(0deg,#0b0b0f,transparent),
+    url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1600&q=80");
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-content {
+    max-width: 550px;
+}
+
+.hero h1 {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.watch-btn {
+    background: #e50914;
+    border: none;
+    color: white;
+    padding: 13px 25px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* SEARCH */
+
+.search-box {
+    margin: 20px 0;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 6px;
+    background: #202028;
+    color: white;
+}
+
+/* CATEGORIES */
+
+.categories {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.category-btn {
+    background: #292933;
+    color: white;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 20px;
+}
+
+.category-btn:hover {
+    background: #e50914;
+}
+
+/* VIDEO CARDS */
+
+.section-title {
+    margin: 25px 0 15px;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(210px,1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #18181f;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 14px;
+}
+
+.card h3 {
+    margin-bottom: 7px;
+}
+
+.card p {
+    color: #999;
+    font-size: 13px;
+}
+
+.card-buttons {
+    display: flex;
+    gap: 7px;
+    margin-top: 12px;
+}
+
+.card-buttons button {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background: #e50914;
+    color: white;
+}
+
+.card-buttons .secondary {
+    background: #33333d;
+}
+
+/* PLAYER */
+
+.player-container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.video-player {
+    width: 100%;
+    height: 500px;
+    background: black;
+    border-radius: 10px;
+}
+
+.player-info {
+    padding: 20px 0;
+}
+
+.back-btn {
+    background: #33333d;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* ADMIN */
+
+.admin-box {
+    background: #18181f;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.admin-box input,
+.admin-box select {
+    width: 100%;
+    padding: 12px;
+    margin: 7px 0;
+    background: #292933;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.admin-box button {
+    padding: 12px 20px;
+    background: #e50914;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 8px;
+}
+
+.admin-video {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #24242d;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 5px;
+}
+
+.delete-btn {
+    background: #e50914;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+    padding: 30px;
+    margin-top: 50px;
+    background: #111116;
+    color: #888;
+}
+
+/* MOBILE */
+
+@media(max-width:700px) {
+
+    .navbar {
+        height: auto;
+        padding: 15px;
+        flex-wrap: wrap;
+    }
+
+    .nav-right {
+        margin-left: 0;
+    }
+
+    .hero h1 {
+        font-size: 35px;
+    }
+
+    .hero {
+        min-height: 350px;
+    }
+
+    .video-player {
+        height: 300px;
+    }
+
+    .auth-box {
+        width: 90%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= LOGIN ================= -->
+
+<div id="authPage" class="auth-container">
+
+    <div class="auth-box">
+
+        <div class="logo">STREAMFLIX</div>
+
+        <div id="loginForm">
+
+            <h2>Login</h2>
+
+            <input type="text" id="loginUser" placeholder="Username">
+
+            <input type="password" id="loginPass" placeholder="Password">
+
+            <button class="auth-btn" onclick="login()">Login</button>
+
+            <div class="switch">
+                Don't have an account?
+                <span onclick="showSignup()">Sign Up</span>
+            </div>
+
+            <div class="switch">
+                <span onclick="showAdminLogin()">Admin Login</span>
+            </div>
+
+            <div id="loginError" class="error"></div>
+
+        </div>
+
+
+        <div id="signupForm" class="hidden">
+
+            <h2>Create Account</h2>
+
+            <input type="text" id="signupUser" placeholder="Username">
+
+            <input type="email" id="signupEmail" placeholder="Email">
+
+            <input type="password" id="signupPass" placeholder="Password">
+
+            <button class="auth-btn" onclick="signup()">Create Account</button>
+
+            <div class="switch">
+                Already have an account?
+                <span onclick="showLogin()">Login</span>
+            </div>
+
+            <div id="signupError" class="error"></div>
+
+        </div>
+
+
+        <div id="adminLoginForm" class="hidden">
+
+            <h2>Admin Login</h2>
+
+            <input type="text" id="adminUser" placeholder="Admin Username">
+
+            <input type="password" id="adminPass" placeholder="Admin Password">
+
+            <button class="auth-btn" onclick="adminLogin()">Admin Login</button>
+
+            <div class="switch">
+                <span onclick="showLogin()">Back to User Login</span>
+            </div>
+
+            <div id="adminError" class="error"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= MAIN APP ================= -->
+
+<div id="mainApp" class="hidden">
+
+<nav class="navbar">
+
+    <div class="nav-logo">STREAMFLIX</div>
+
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('movies')">Movies</a>
+    <a onclick="showPage('tv')">TV Shows</a>
+    <a onclick="showPage('live')">Live</a>
+    <a onclick="showPage('watchlist')">My List</a>
+
+    <div class="nav-right">
+
+        <span id="usernameDisplay"></span>
+
+        <button class="logout" onclick="logout()">Logout</button>
+
+    </div>
+
+</nav>
+
+
+<!-- HOME -->
+
+<section id="homePage" class="page">
+
+    <div class="hero">
+
+        <div class="hero-content">
+
+            <h1>Unlimited Entertainment</h1>
+
+            <p>
+                Watch movies, TV shows and live streams anytime.
+                Discover new entertainment and create your personal watchlist.
+            </p>
+
+            <button class="watch-btn" onclick="playVideo(1)">
+                ▶ Watch Now
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search movies, shows..."
+            onkeyup="searchVideos()">
+
+    </div>
+
+
+    <h2 class="section-title">Popular Videos</h2>
+
+    <div id="homeVideos" class="video-grid"></div>
+
+</section>
+
+
+<!-- MOVIES -->
+
+<section id="moviesPage" class="page hidden">
+
+    <h1>🎬 Movies</h1>
+
+    <div class="categories">
+
+        <button class="category-btn" onclick="filterCategory('All')">All</button>
+
+        <button class="category-btn" onclick="filterCategory('Action')">
+            Action
+        </button>
+
+        <button class="category-btn" onclick="filterCategory('Comedy')">
+            Comedy
+        </button>
+
+        <button class="category-btn" onclick="filterCategory('Drama')">
+            Drama
+        </button>
+
+        <button class="category-btn" onclick="filterCategory('Sci-Fi')">
+            Sci-Fi
+        </button>
+
+    </div>
+
+    <div id="movieVideos" class="video-grid"></div>
+
+</section>
+
+
+<!-- TV -->
+
+<section id="tvPage" class="page hidden">
+
+    <h1>📺 TV Shows</h1>
+
+    <div id="tvVideos" class="video-grid"></div>
+
+</section>
+
+
+<!-- LIVE -->
+
+<section id="livePage" class="page hidden">
+
+    <h1>🔴 Live Streams</h1>
+
+    <div id="liveVideos" class="video-grid"></div>
+
+</section>
+
+
+<!-- WATCHLIST -->
+
+<section id="watchlistPage" class="page hidden">
+
+    <h1>❤️ My Watchlist</h1>
+
+    <div id="watchlistVideos" class="video-grid"></div>
+
+</section>
+
+
+<!-- PLAYER -->
+
+<section id="playerPage" class="page hidden">
+
+    <div class="player-container">
+
+        <button class="back-btn" onclick="showPage('home')">
+            ← Back
+        </button>
+
+        <video
+            id="videoPlayer"
+            class="video-player"
+            controls>
+        </video>
+
+        <div class="player-info">
+
+            <h1 id="playerTitle"></h1>
+
+            <p id="playerDescription"></p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ADMIN -->
+
+<section id="adminPage" class="page hidden">
+
+    <h1>🛠️ Admin Dashboard</h1>
+
+    <br>
+
+    <div class="admin-box">
+
+        <h2>Add New Video</h2>
+
+        <input id="videoTitle" placeholder="Video Title">
+
+        <input id="videoImage" placeholder="Poster Image URL">
+
+        <input id="videoURL" placeholder="Video URL">
+
+        <input id="videoDescription" placeholder="Description">
+
+        <select id="videoType">
+
+            <option value="Movie">Movie</option>
+
+            <option value="TV">TV Show</option>
+
+            <option value="Live">Live Stream</option>
+
+        </select>
+
+        <select id="videoCategory">
+
+            <option value="Action">Action</option>
+
+            <option value="Comedy">Comedy</option>
+
+            <option value="Drama">Drama</option>
+
+            <option value="Sci-Fi">Sci-Fi</option>
+
+        </select>
+
+        <button onclick="addVideo()">
+            Add Video
+        </button>
+
+    </div>
+
+
+    <div class="admin-box">
+
+        <h2>Manage Videos</h2>
+
+        <div id="adminVideos"></div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <p>© 2026 StreamFlix Video Streaming Platform</p>
+
+    <p>HTML • CSS • JavaScript • Local Storage</p>
+
+</footer>
+
+</div>
+
+
+<script>
+
+/* ================= DEFAULT VIDEOS ================= */
+
+let defaultVideos = [
+
+{
+    id:1,
+    title:"The Adventure",
+    type:"Movie",
+    category:"Action",
+    image:"https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=600&q=80",
+    video:"https://www.w3schools.com/html/mov_bbb.mp4",
+    description:"An exciting action adventure movie."
+},
+
+{
+    id:2,
+    title:"Future World",
+    type:"Movie",
+    category:"Sci-Fi",
+    image:"https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+    video:"https://www.w3schools.com/html/movie.mp4",
+    description:"A science fiction journey into the future."
+},
+
+{
+    id:3,
+    title:"Funny Friends",
+    type:"Movie",
+    category:"Comedy",
+    image:"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=600&q=80",
+    video:"https://www.w3schools.com/html/mov_bbb.mp4",
+    description:"A fun comedy for the whole family."
+},
+
+{
+    id:4,
+    title:"Family Story",
+    type:"TV",
+    category:"Drama",
+    image:"https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?auto=format&fit=crop&w=600&q=80",
+    video:"https://www.w3schools.com/html/mov_bbb.mp4",
+    description:"A touching family drama series."
+},
+
+{
+    id:5,
+    title:"Live News",
+    type:"Live",
+    category:"Drama",
+    image:"https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80",
+    video:"https://www.w3schools.com/html/mov_bbb.mp4",
+    description:"Live news streaming."
+}
+
+];
+
+
+/* ================= LOCAL STORAGE ================= */
+
+if(!localStorage.getItem("videos")) {
+
+    localStorage.setItem(
+        "videos",
+        JSON.stringify(defaultVideos)
+    );
+
+}
+
+let videos =
+JSON.parse(localStorage.getItem("videos"));
+
+
+/* ================= USERS ================= */
+
+if(!localStorage.getItem("users")) {
+
+    localStorage.setItem(
+        "users",
+        JSON.stringify([])
+    );
+
+}
+
+
+/* ================= AUTH ================= */
+
+function showLogin(){
+
+    document.getElementById("loginForm")
+    .classList.remove("hidden");
+
+    document.getElementById("signupForm")
+    .classList.add("hidden");
+
+    document.getElementById("adminLoginForm")
+    .classList.add("hidden");
+
+}
+
+
+function showSignup(){
+
+    document.getElementById("loginForm")
+    .classList.add("hidden");
+
+    document.getElementById("signupForm")
+    .classList.remove("hidden");
+
+    document.getElementById("adminLoginForm")
+    .classList.add("hidden");
+
+}
+
+
+function showAdminLogin(){
+
+    document.getElementById("loginForm")
+    .classList.add("hidden");
+
+    document.getElementById("signupForm")
+    .classList.add("hidden");
+
+    document.getElementById("adminLoginForm")
+    .classList.remove("hidden");
+
+}
+
+
+/* ================= SIGNUP ================= */
+
+function signup(){
+
+    let username =
+    document.getElementById("signupUser").value.trim();
+
+    let email =
+    document.getElementById("signupEmail").value.trim();
+
+    let password =
+    document.getElementById("signupPass").value;
+
+    if(!username || !email || !password){
+
+        document.getElementById("signupError").innerText =
+        "Please fill all fields.";
+
+        return;
+
+    }
+
+    let users =
+    JSON.parse(localStorage.getItem("users"));
+
+    let exists =
+    users.find(u => u.username === username);
+
+    if(exists){
+
+        document.getElementById("signupError").innerText =
+        "Username already exists.";
+
+        return;
+
+    }
+
+    users.push({
+        username,
+        email,
+        password
+    });
+
+    localStorage.setItem(
+        "users",
+        JSON.stringify(users)
+    );
+
+    alert("Account created successfully!");
+
+    showLogin();
+
+}
+
+
+/* ================= LOGIN ================= */
+
+function login(){
+
+    let username =
+    document.getElementById("loginUser").value.trim();
+
+    let password =
+    document.getElementById("loginPass").value;
+
+    let users =
+    JSON.parse(localStorage.getItem("users"));
+
+    let user =
+    users.find(
+        u =>
+        u.username === username &&
+        u.password === password
+    );
+
+    if(!user){
+
+        document.getElementById("loginError").innerText =
+        "Invalid username or password.";
+
+        return;
+
+    }
+
+    localStorage.setItem(
+        "currentUser",
+        username
+    );
+
+    localStorage.setItem(
+        "role",
+        "user"
+    );
+
+    startApp();
+
+}
+
+
+/* ================= ADMIN LOGIN ================= */
+
+function adminLogin(){
+
+    let username =
+    document.getElementById("adminUser").value;
+
+    let password =
+    document.getElementById("adminPass").value;
+
+    if(username === "admin" && password === "admin123"){
+
+        localStorage.setItem(
+            "currentUser",
+            "Administrator"
+        );
+
+        localStorage.setItem(
+            "role",
+            "admin"
+        );
+
+        startApp();
+
+        showPage("admin");
+
+    }
+
+    else{
+
+        document.getElementById("adminError").innerText =
+        "Invalid admin credentials.";
+
+    }
+
+}
+
+
+/* ================= START APP ================= */
+
+function startApp(){
+
+    document.getElementById("authPage")
+    .classList.add("hidden");
+
+    document.getElementById("mainApp")
+    .classList.remove("hidden");
+
+    document.getElementById("usernameDisplay")
+    .innerText =
+    localStorage.getItem("currentUser");
+
+    renderVideos();
+
+}
+
+
+/* ================= LOGOUT ================= */
+
+function logout(){
+
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("role");
+
+    location.reload();
+
+}
+
+
+/* ================= PAGE NAVIGATION ================= */
+
+function showPage(page){
+
+    let pages = [
+        "homePage",
+        "moviesPage",
+        "tvPage",
+        "livePage",
+        "watchlistPage",
+        "playerPage",
+        "adminPage"
+    ];
+
+    pages.forEach(p => {
+
+        document.getElementById(p)
+        .classList.add("hidden");
+
+    });
+
+
+    document.getElementById(page + "Page")
+    .classList.remove("hidden");
+
+
+    if(page === "watchlist")
+        renderWatchlist();
+
+    if(page === "admin")
+        renderAdmin();
+
+}
+
+
+/* ================= VIDEO CARD ================= */
+
+function createCard(video){
+
+    let watchlist =
+    JSON.parse(
+        localStorage.getItem("watchlist") || "[]"
+    );
+
+    let isAdded =
+    watchlist.includes(video.id);
+
+    return `
+
+    <div class="card">
+
+        <img src="${video.image}">
+
+        <div class="card-content">
+
+            <h3>${video.title}</h3>
+
+            <p>${video.type} • ${video.category}</p>
+
+            <p>${video.description}</p>
+
+            <div class="card-buttons">
+
+                <button onclick="playVideo(${video.id})">
+                    ▶ Play
+                </button>
+
+                <button
+                class="secondary"
+                onclick="toggleWatchlist(${video.id})">
+
+                    ${isAdded ? "✓ Added" : "♡ My List"}
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+/* ================= RENDER ================= */
+
+function renderVideos(){
+
+    videos =
+    JSON.parse(localStorage.getItem("videos"));
+
+    document.getElementById("homeVideos").innerHTML =
+    videos.map(createCard).join("");
+
+
+    document.getElementById("movieVideos").innerHTML =
+    videos
+    .filter(v => v.type === "Movie")
+    .map(createCard)
+    .join("");
+
+
+    document.getElementById("tvVideos").innerHTML =
+    videos
+    .filter(v => v.type === "TV")
+    .map(createCard)
+    .join("");
+
+
+    document.getElementById("liveVideos").innerHTML =
+    videos
+    .filter(v => v.type === "Live")
+    .map(createCard)
+    .join("");
+
+}
+
+
+function renderWatchlist(){
+
+    let list =
+    JSON.parse(
+        localStorage.getItem("watchlist") || "[]"
+    );
+
+    let selected =
+    videos.filter(v => list.includes(v.id));
+
+    document.getElementById("watchlistVideos").innerHTML =
+    selected.length
+    ?
+    selected.map(createCard).join("")
+    :
+    "<p>Your watchlist is empty.</p>";
+
+}
+
+
+/* ================= PLAY VIDEO ================= */
+
+function playVideo(id){
+
+    let video =
+    videos.find(v => v.id === id);
+
+    if(!video) return;
+
+    showPage("player");
+
+    document.getElementById("playerTitle")
+    .innerText = video.title;
+
+    document.getElementById("playerDescription")
+    .innerText = video.description;
+
+    let player =
+    document.getElementById("videoPlayer");
+
+    player.src = video.video;
+
+    player.play();
+
+}
+
+
+/* ================= WATCHLIST ================= */
+
+function toggleWatchlist(id){
+
+    let list =
+    JSON.parse(
+        localStorage.getItem("watchlist") || "[]"
+    );
+
+    if(list.includes(id)){
+
+        list =
+        list.filter(x => x !== id);
+
+    }
+
+    else{
+
+        list.push(id);
+
+    }
+
+    localStorage.setItem(
+        "watchlist",
+        JSON.stringify(list)
+    );
+
+    renderVideos();
+
+    renderWatchlist();
+
+}
+
+
+/* ================= SEARCH ================= */
+
+function searchVideos(){
+
+    let search =
+    document.getElementById("searchInput")
+    .value
+    .toLowerCase();
+
+    let result =
+    videos.filter(v =>
+        v.title.toLowerCase().includes(search) ||
+        v.category.toLowerCase().includes(search)
+    );
+
+    document.getElementById("homeVideos").innerHTML =
+    result.map(createCard).join("");
+
+}
+
+
+/* ================= CATEGORY ================= */
+
+function filterCategory(category){
+
+    let result;
+
+    if(category === "All"){
+
+        result =
+        videos.filter(v => v.type === "Movie");
+
+    }
+
+    else{
+
+        result =
+        videos.filter(
+            v =>
+            v.type === "Movie" &&
+            v.category === category
+        );
+
+    }
+
+    document.getElementById("movieVideos").innerHTML =
+    result.map(createCard).join("");
+
+}
+
+
+/* ================= ADMIN ================= */
+
+function addVideo(){
+
+    let title =
+    document.getElementById("videoTitle").value.trim();
+
+    let image =
+    document.getElementById("videoImage").value.trim();
+
+    let videoURL =
+    document.getElementById("videoURL").value.trim();
+
+    let description =
+    document.getElementById("videoDescription").value.trim();
+
+    let type =
+    document.getElementById("videoType").value;
+
+    let category =
+    document.getElementById("videoCategory").value;
+
+
+    if(!title || !image || !videoURL){
+
+        alert("Please enter title, image and video URL.");
+
+        return;
+
+    }
+
+
+    let newVideo = {
+
+        id: Date.now(),
+
+        title:title,
+
+        type:type,
+
+        category:category,
+
+        image:image,
+
+        video:videoURL,
+
+        description:
+        description || "No description available."
+
+    };
+
+
+    videos.push(newVideo);
+
+
+    localStorage.setItem(
+        "videos",
+        JSON.stringify(videos)
+    );
+
+
+    alert("Video added successfully!");
+
+
+    document.getElementById("videoTitle").value = "";
+    document.getElementById("videoImage").value = "";
+    document.getElementById("videoURL").value = "";
+    document.getElementById("videoDescription").value = "";
+
+
+    renderVideos();
+
+    renderAdmin();
+
+}
+
+
+function renderAdmin(){
+
+    let container =
+    document.getElementById("adminVideos");
+
+    container.innerHTML =
+    videos.map(v => `
+
+        <div class="admin-video">
+
+            <span>
+                ${v.title} (${v.type})
+            </span>
+
+            <button
+            class="delete-btn"
+            onclick="deleteVideo(${v.id})">
+
+                Delete
+
+            </button>
+
+        </div>
+
+    `).join("");
+
+}
+
+
+function deleteVideo(id){
+
+    if(!confirm("Delete this video?"))
+        return;
+
+
+    videos =
+    videos.filter(v => v.id !== id);
+
+
+    localStorage.setItem(
+        "videos",
+        JSON.stringify(videos)
+    );
+
+
+    renderVideos();
+
+    renderAdmin();
+
+}
+
+
+/* ================= AUTO LOGIN ================= */
+
+window.onload = function(){
+
+    let current =
+    localStorage.getItem("currentUser");
+
+    if(current){
+
+        startApp();
+
+        if(localStorage.getItem("role") === "admin"){
+
+            showPage("admin");
+
+        }
+
+    }
+
+};
+
+</script>
+
+</body>
+</html>
